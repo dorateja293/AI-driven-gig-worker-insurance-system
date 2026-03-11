@@ -71,9 +71,9 @@ Artificial Intelligence is woven directly into the core workflow via two modules
 
 ### Tech Stack
 * **Frontend:** React / Next.js, Tailwind CSS (Worker App + Admin Dashboard)
-* **Backend:** Node.js, Express.js
-* **Database:** MongoDB
-* **AI/ML:** Python (Scikit-learn, Pandas) exposed via FastAPI
+* **Backend:** Python (Flask or Django)
+* **Database:** MongoDB (or PostgreSQL / SQLite depending on framework choice)
+* **AI/ML:** Python (Scikit-learn, Pandas) integrated directly within the backend
 * **APIs:** OpenWeather API, Payment Sandbox (UPI simulator/Razorpay test mode)
 
 ### High-Level Flow
