@@ -1,4 +1,4 @@
-# 🦄 InsureX: AI-Powered Parametric Insurance for the Gig Economy
+#  InsureX: AI-Powered Parametric Insurance for the Gig Economy
 
 **Team Name:** InsureX  
 **Hackathon:** Guidewire DEVTrails 2026 - Unicorn Chase  
