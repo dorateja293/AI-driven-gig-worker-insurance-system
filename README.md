@@ -8,8 +8,7 @@
 ![Model](https://img.shields.io/badge/Model-Parametric%20Insurance-orange)
 
 **Team Name:** InsureX  
-**Hackathon:** Guidewire DEVTrails 2026   
-
+**Hackathon:** Guidewire DEVTrails 2026 – University Hackathon (Unicorn Chase)
 ---
 
 ## 1. The Problem Space & Persona
