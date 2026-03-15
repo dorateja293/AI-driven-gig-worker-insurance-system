@@ -1,13 +1,18 @@
-#  InsureX: AI-Powered Parametric Insurance for the Gig Economy
+# InsureX: AI-Powered Parametric Insurance for the Gig Economy
 
 **InsureX is an AI-powered parametric insurance platform that protects gig workers from income loss during extreme weather disruptions through automated real-time payouts.**
 
+![Hackathon](https://img.shields.io/badge/Built%20for-Guidewire%20DEVTrails%202026-blueviolet)
+![Tech Stack](https://img.shields.io/badge/Tech-Python%20%2B%20React-blue)
+![Category](https://img.shields.io/badge/Category-InsurTech%20%7C%20AI-success)
+![Model](https://img.shields.io/badge/Model-Parametric%20Insurance-orange)
+
 **Team Name:** InsureX  
-**Hackathon:** Guidewire DEVTrails 2026 – University Hackathon (Unicorn Chase)
+**Hackathon:** Guidewire DEVTrails 2026   
 
 ---
 
-##  1. The Problem Space & Persona
+## 1. The Problem Space & Persona
 
 **Chosen Persona:** Food & Q-Commerce Delivery Partners (e.g., Zomato, Swiggy, Zepto).
 
@@ -16,15 +21,31 @@ Delivery partners in India rely on daily wages derived directly from task comple
 
 ---
 
-##  2. Core Solution
+## 2. Core Solution
 
 InsureX is an **AI-Enabled Parametric Insurance Platform** that acts as an income safety net for delivery workers during specified external disruptions. 
 
 Instead of relying on manual claim submissions, slow assessments, and long approvals, InsureX uses real-time third-party API data to **automatically detect disruptions, trigger claims, and simulate instant payouts** to the worker's wallet when predefined thresholds are met.
 
+### Expected Impact
+InsureX creates financial resilience for gig workers while maintaining a sustainable insurance model.
+
+**Worker Benefits**
+* Immediate income protection during disruptions
+* Transparent automated claims
+* Affordable weekly coverage
+
+**Platform Benefits**
+* Improved worker trust and retention
+* Reduced economic stress during environmental disruptions
+
+**Insurance Innovation**
+* Fully automated parametric claim settlement
+* AI-driven underwriting for gig economies
+
 ---
 
-##  3. Why Parametric Insurance?
+## 3. Why Parametric Insurance?
 
 Traditional insurance requires manual claim submission and verification, often taking days or weeks to process. Parametric insurance eliminates this friction by using predefined external triggers.
 
@@ -38,7 +59,7 @@ Traditional insurance requires manual claim submission and verification, often t
 
 ---
 
-##  4. The Weekly Premium Model
+## 4. The Weekly Premium Model
 
 Gig workers operate on a weekly earnings cycle. Therefore, our financial model is strictly built on a **Weekly Subscription Plan**.
 
@@ -51,7 +72,7 @@ Gig workers operate on a weekly earnings cycle. Therefore, our financial model i
 
 ---
 
-##  5. Business Sustainability
+## 5. Business Sustainability
 
 **How does this system remain financially sustainable?**
 InsureX operates on a **Risk Pool Model**. The collected premiums from all active workers create a shared fund that finances payouts for those specifically affected by localized disruptions.
@@ -61,11 +82,12 @@ InsureX operates on a **Risk Pool Model**. The collected premiums from all activ
   * A localized heavy rain event disrupts 10 workers in a specific zone.
   * 10 workers × ₹200 payout = **₹2000 total payout**.
   * **Remaining pool = ₹2000**.
+
 This demonstrates a realistic, mathematically sound insurance model where probability and pooled risk ensure system solvency.
 
 ---
 
-##  6. Parametric Triggers (Automated Claims)
+## 6. Parametric Triggers (Automated Claims)
 
 Claims in InsureX are generated automatically without human intervention. Our Phase-2 MVP focuses on 3 primary disruption triggers, monitored continuously:
 
@@ -82,21 +104,22 @@ Claims in InsureX are generated automatically without human intervention. Our Ph
 
 ---
 
-##  7. AI / ML Integration Strategy
+## 7. AI / ML Integration Strategy
 
 Artificial Intelligence is woven directly into the core workflow via three core modules:
 
-1. **Risk Profiling AI (Underwriting & Pricing):** Dynamically generates proactive risk profiles and individual weekly premium quotes.
+1. **Risk Profiling AI (Underwriting & Pricing):** Dynamically generates proactive risk profiles and individual weekly premium quotes. The Risk Profiling AI can use ensemble models such as Random Forest or Gradient Boosting to generate probabilistic disruption risk scores.
    * **Risk Model Inputs:** Historical rainfall frequency, heatwave frequency, flood risk zones, delivery density, seasonal patterns.
    * **Model Output:** `RiskScore (0-1)` and `Weekly Premium Recommendation`.
 2. **AI Disruption Prediction:** Instead of only reacting to weather, the AI forecasts upcoming disruptions.
    * *Example:* An AI Forecast Model predicts tomorrow's heat probability = 82%. The system automatically informs the worker: *"High heat risk tomorrow. Coverage recommended."* This demonstrates proactive, predictive insurance.
 3. **Fraud Guard (Anomaly Detection):** Before any parametric payout is released, the AI evaluates the claim context to prevent system abuse.
    * *Checks include:* Does the worker's mocked GPS coordinate history match the weather event zone? Is this an impossible duplicate claim? Were they "offline" on the delivery app the entire day prior to the weather event (indicating no original intent to work)?
+   * *Cluster Detection:* The Fraud Guard also detects abnormal claim clusters from identical GPS coordinates that may indicate coordinated fraud attempts.
 
 ---
 
-##  8. Platform Workflow (User Journey)
+## 8. Platform Workflow (User Journey)
 
 1. **Onboarding:** Delivery partner registers, providing their city, zone, and primary platform (e.g., Swiggy).
 2. **AI Quote Generation:** The system profiles the risk and offers a tailored Weekly Premium (e.g., ₹35/week).
@@ -108,7 +131,7 @@ Artificial Intelligence is woven directly into the core workflow via three core 
 
 ---
 
-##  9. Technical Architecture & Stack
+## 9. Technical Architecture & Stack
 
 ### Tech Stack
 * **Frontend:** React / Next.js, Tailwind CSS (Worker App + Admin Dashboard)
@@ -135,12 +158,15 @@ flowchart TD
     Payout --> Wallet[Worker Wallet]
 ```
 
+### Scalability
+The event-driven architecture allows InsureX to process thousands of disruption-triggered claims simultaneously without blocking the system.
+
 ### Observability & Logging
 System logs disruption detection, claim triggers, and payout transactions for auditability and regulatory compliance.
 
 ---
 
-##  10. Database Schema Design
+## 10. Database Schema Design
 
 **1. Workers Collection**
 * `worker_id` (PK)
@@ -170,7 +196,7 @@ System logs disruption detection, claim triggers, and payout transactions for au
 
 ---
 
-##  11. Detailed System Workflow
+## 11. Detailed System Workflow
 
 The following outlines the exact step-by-step sequence of events from a worker joining the platform to receiving an automated payout during a disruption.
 
@@ -200,7 +226,7 @@ The following outlines the exact step-by-step sequence of events from a worker j
 
 ---
 
-##  12. Workflow Sequence Diagram
+## 12. Workflow Sequence Diagram
 
 ```mermaid
 sequenceDiagram
