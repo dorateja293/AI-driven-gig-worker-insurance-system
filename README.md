@@ -2,11 +2,6 @@
 
 **InsureX is an AI-powered parametric insurance platform that protects gig workers from income loss during extreme weather disruptions through automated real-time payouts.**
 
-![Hackathon](https://img.shields.io/badge/Built%20for-Guidewire%20DEVTrails%202026-blueviolet)
-![Tech Stack](https://img.shields.io/badge/Tech-Python%20%2B%20React-blue)
-![Category](https://img.shields.io/badge/Category-InsurTech%20%7C%20AI-success)
-![Model](https://img.shields.io/badge/Model-Parametric%20Insurance-orange)
-
 **Team Name:** InsureX  
 **Hackathon:** Guidewire DEVTrails 2026 – University Hackathon (Unicorn Chase)
 ---
