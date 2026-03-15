@@ -5,7 +5,7 @@
 
 ---
 
-## 🎯 1. The Problem Space & Persona
+##  1. The Problem Space & Persona
 
 **Chosen Persona:** Food & Q-Commerce Delivery Partners (e.g., Zomato, Swiggy, Zepto).
 
@@ -14,7 +14,7 @@ Delivery partners in India rely on daily wages derived directly from task comple
 
 ---
 
-## 💡 2. Core Solution
+##  2. Core Solution
 
 InsureX is an **AI-Enabled Parametric Insurance Platform** that acts as an income safety net for delivery workers during specified external disruptions. 
 
@@ -22,7 +22,7 @@ Instead of relying on manual claim submissions, slow assessments, and long appro
 
 ---
 
-## 💰 3. The Weekly Premium Model
+##  3. The Weekly Premium Model
 
 Gig workers operate on a weekly earnings cycle. Therefore, our financial model is strictly built on a **Weekly Subscription Plan**.
 
@@ -32,7 +32,7 @@ Gig workers operate on a weekly earnings cycle. Therefore, our financial model i
 
 ---
 
-## ⚡ 4. Parametric Triggers (Automated Claims)
+##  4. Parametric Triggers (Automated Claims)
 
 Claims in InsureX are generated automatically without human intervention. Our Phase-2 MVP focuses on 2 primary disruption triggers, monitored continuously via the **OpenWeather API**:
 
@@ -45,7 +45,7 @@ Claims in InsureX are generated automatically without human intervention. Our Ph
 
 ---
 
-## 🧠 5. AI / ML Integration Strategy
+##  5. AI / ML Integration Strategy
 
 Artificial Intelligence is woven directly into the core workflow via two modules:
 
@@ -55,7 +55,7 @@ Artificial Intelligence is woven directly into the core workflow via two modules
 
 ---
 
-## 🔄 6. Platform Workflow (User Journey)
+##  6. Platform Workflow (User Journey)
 
 1. **Onboarding:** Delivery partner registers, providing their city, zone, and primary platform (e.g., Swiggy).
 2. **AI Quote Generation:** The system profiles the risk and offers a tailored Weekly Premium (e.g., ₹35/week).
@@ -67,7 +67,7 @@ Artificial Intelligence is woven directly into the core workflow via two modules
 
 ---
 
-## 🏗️ 7. Technical Architecture & Stack
+##  7. Technical Architecture & Stack
 
 ### Tech Stack
 * **Frontend:** React / Next.js, Tailwind CSS (Worker App + Admin Dashboard)
@@ -90,7 +90,7 @@ flowchart TD
 
 ---
 
-## 🗄️ 8. Database Schema Design (High Level)
+##  8. Database Schema Design
 
 **1. Workers Collection**
 * `worker_id` (PK)
@@ -120,7 +120,7 @@ flowchart TD
 
 ---
 
-## 🚀 9. Detailed System Workflow
+##  9. Detailed System Workflow
 
 The following outlines the exact step-by-step sequence of events from a worker joining the platform to receiving an automated payout during a disruption.
 
