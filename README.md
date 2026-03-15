@@ -1,9 +1,10 @@
-# InsureX: AI-Powered Parametric Insurance for the Gig Economy
+# InsureX: AI-Powered Parametric Insurance for the Gig Economy 
 
-**InsureX is an AI-powered parametric insurance platform that protects gig workers from income loss during extreme weather disruptions through automated real-time payouts.**
+**InsureX is an AI-powered parametric insurance platform that protects gig workers from income loss during extreme weather disruptions through automated real-time payouts.** 
 
-**Team Name:** InsureX  
-**Hackathon:** Guidewire DEVTrails 2026 – University Hackathon (Unicorn Chase)
+**Team Name:** InsureX 
+**Hackathon:** Guidewire DEVTrails 2026 – University Hackathon (Unicorn Chase) 
+
 ---
 
 ## 1. The Problem Space & Persona
