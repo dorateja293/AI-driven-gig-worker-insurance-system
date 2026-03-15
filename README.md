@@ -1,13 +1,13 @@
-#  InsureX: AI-Powered Parametric Insurance for the Gig Economy
+# 🦄 InsureX: AI-Powered Parametric Insurance for the Gig Economy
 
 **InsureX is an AI-powered parametric insurance platform that protects gig workers from income loss during extreme weather disruptions through automated real-time payouts.**
 
 **Team Name:** InsureX  
-**Hackathon:** Guidewire DEVTrails 2026 - Unicorn Chase  
+**Hackathon:** Guidewire DEVTrails 2026   
 
 ---
 
-##  1. The Problem Space & Persona
+## 🎯 1. The Problem Space & Persona
 
 **Chosen Persona:** Food & Q-Commerce Delivery Partners (e.g., Zomato, Swiggy, Zepto).
 
@@ -16,7 +16,7 @@ Delivery partners in India rely on daily wages derived directly from task comple
 
 ---
 
-##  2. Core Solution
+## 💡 2. Core Solution
 
 InsureX is an **AI-Enabled Parametric Insurance Platform** that acts as an income safety net for delivery workers during specified external disruptions. 
 
@@ -24,7 +24,21 @@ Instead of relying on manual claim submissions, slow assessments, and long appro
 
 ---
 
-##  3. The Weekly Premium Model
+## 🤔 3. Why Parametric Insurance?
+
+Traditional insurance requires manual claim submission and verification, often taking days or weeks to process. Parametric insurance eliminates this friction by using predefined external triggers.
+
+`Weather Data → Threshold Met → Automatic Payout`
+
+**Benefits:**
+* **No manual claims:** Eliminates administrative overhead.
+* **Instant settlement:** Gig workers get compensated the same day.
+* **Transparent rules:** Trust is built because payout parameters are mathematically predefined.
+* **Scalable for gig economies:** Designed to handle thousands of concurrent micropayments automatically.
+
+---
+
+## 💰 4. The Weekly Premium Model
 
 Gig workers operate on a weekly earnings cycle. Therefore, our financial model is strictly built on a **Weekly Subscription Plan**.
 
@@ -37,7 +51,7 @@ Gig workers operate on a weekly earnings cycle. Therefore, our financial model i
 
 ---
 
-## 💼 4. Business Logic (Financial Sustainability)
+## 💼 5. Business Sustainability
 
 **How does this system remain financially sustainable?**
 InsureX operates on a **Risk Pool Model**. The collected premiums from all active workers create a shared fund that finances payouts for those specifically affected by localized disruptions.
@@ -51,9 +65,9 @@ This demonstrates a realistic, mathematically sound insurance model where probab
 
 ---
 
-## ⚡ 5. Parametric Triggers (Automated Claims)
+## ⚡ 6. Parametric Triggers (Automated Claims)
 
-Claims in InsureX are generated automatically without human intervention. Our Phase-2 MVP focuses on 2 primary disruption triggers, monitored continuously via the **OpenWeather API**:
+Claims in InsureX are generated automatically without human intervention. Our Phase-2 MVP focuses on 3 primary disruption triggers, monitored continuously:
 
 1. **Extreme Heat (Environmental):**
    * *Trigger Condition:* Temperature > 43°C (or Heat Index > 46°C) for 2+ consecutive hours in the worker's active zone.
@@ -61,14 +75,20 @@ Claims in InsureX are generated automatically without human intervention. Our Ph
 2. **Heavy Rainfall / Waterlogging (Environmental):**
    * *Trigger Condition:* Rainfall > 50mm within a 3-hour window.
    * *Payout Logic:* Instant payout triggered to offset lost peak-hour deliveries.
+3. **Platform Outage / App Crash (Social):**
+   * *Trigger Condition:* Delivery platform API downtime > 30 minutes.
+   * *Impact:* Workers cannot receive orders.
+   * *Payout Logic:* ₹150 fixed compensation to offset the lost operating window.
 
 ---
 
-## 🧠 6. AI / ML Integration Strategy
+## 🧠 7. AI / ML Integration Strategy
 
 Artificial Intelligence is woven directly into the core workflow via three core modules:
 
-1. **Risk Profiling AI (Underwriting & Pricing):** Uses historical weather datasets and delivery-zone mapping to dynamically generate risk profiles and output a fair Weekly Premium for each individual worker.
+1. **Risk Profiling AI (Underwriting & Pricing):** Dynamically generates proactive risk profiles and individual weekly premium quotes.
+   * **Risk Model Inputs:** Historical rainfall frequency, heatwave frequency, flood risk zones, delivery density, seasonal patterns.
+   * **Model Output:** `RiskScore (0-1)` and `Weekly Premium Recommendation`.
 2. **AI Disruption Prediction:** Instead of only reacting to weather, the AI forecasts upcoming disruptions.
    * *Example:* An AI Forecast Model predicts tomorrow's heat probability = 82%. The system automatically informs the worker: *"High heat risk tomorrow. Coverage recommended."* This demonstrates proactive, predictive insurance.
 3. **Fraud Guard (Anomaly Detection):** Before any parametric payout is released, the AI evaluates the claim context to prevent system abuse.
@@ -76,7 +96,7 @@ Artificial Intelligence is woven directly into the core workflow via three core 
 
 ---
 
-## 🔄 7. Platform Workflow (User Journey)
+## 🔄 8. Platform Workflow (User Journey)
 
 1. **Onboarding:** Delivery partner registers, providing their city, zone, and primary platform (e.g., Swiggy).
 2. **AI Quote Generation:** The system profiles the risk and offers a tailored Weekly Premium (e.g., ₹35/week).
@@ -88,13 +108,14 @@ Artificial Intelligence is woven directly into the core workflow via three core 
 
 ---
 
-## 🏗️ 8. Technical Architecture & Stack
+## 🏗️ 9. Technical Architecture & Stack
 
 ### Tech Stack
 * **Frontend:** React / Next.js, Tailwind CSS (Worker App + Admin Dashboard)
 * **Backend:** Python (Flask or Django)
 * **Database:** MongoDB (or PostgreSQL / SQLite depending on framework choice)
 * **AI/ML:** Python (Scikit-learn, Pandas) integrated directly within the backend
+* **Message Queue:** Redis / Kafka (for asynchronous claim burst processing)
 * **APIs:** OpenWeather API, Payment Sandbox (UPI simulator/Razorpay test mode)
 
 ### High-Level Flow (Simplified)
@@ -106,16 +127,20 @@ flowchart TD
     
     WeatherAPI[Weather API] --> Scheduler[Cron Scheduler]
     Scheduler --> Monitor[Disruption Monitor]
-    Monitor --> Trigger[Parametric Engine]
+    Monitor -->|Event Queue| Queue[Kafka / Redis Queue]
+    Queue --> Trigger[Parametric Engine]
     Trigger --> Fraud[Fraud Detection]
     Fraud --> Claim[Claim Engine]
     Claim --> Payout[Payout System]
     Payout --> Wallet[Worker Wallet]
 ```
 
+### Observability & Logging
+System logs disruption detection, claim triggers, and payout transactions for auditability and regulatory compliance.
+
 ---
 
-## 🗄️ 9. Database Schema Design
+## 🗄️ 10. Database Schema Design
 
 **1. Workers Collection**
 * `worker_id` (PK)
@@ -132,7 +157,7 @@ flowchart TD
 **3. Events Collection (Disruptions)**
 * `event_id` (PK)
 * `zone/city`
-* `event_type` (Heat/Rain)
+* `event_type` (Heat/Rain/Outage)
 * `threshold_value` (e.g., 45°C)
 * `timestamp`
 
@@ -145,7 +170,7 @@ flowchart TD
 
 ---
 
-## 🚀 10. Detailed System Workflow
+## 🚀 11. Detailed System Workflow
 
 The following outlines the exact step-by-step sequence of events from a worker joining the platform to receiving an automated payout during a disruption.
 
@@ -157,22 +182,25 @@ The following outlines the exact step-by-step sequence of events from a worker j
 
 ### Phase B: Continuous Monitoring
 5. **Hourly Polling:** A `Cron Scheduler` service fetches real-time data from the OpenWeather API every 60 minutes for all active zones and passes it to the `Disruption Monitor`.
-6. **Threshold Check:** The Monitor evaluates the weather readings against parametric triggers. **Data is only logged into the `Events` database if a threshold condition is met** (e.g., Temperature > 43°C).
+6. **Threshold Check:** Weather readings are evaluated in-memory. Only when a parametric threshold is breached is a disruption event persisted to the `Events` database.
 
 ### Phase C: Disruption & Parametric Trigger
 7. **Threshold Breach:** The monitor detects that the temperature in Zone A has hit 44°C at 2:00 PM.
-8. **Duration Tracking:** At 4:00 PM, the system confirms the temperature has remained above 43°C for 2 consecutive hours. A formal `Disruption Event` is declared.
-9. **Eligibility Check:** The `Parametric Engine` queries the database for all workers assigned to Zone A whose policies are currently "Active".
+8. **Duration Tracking:** At 4:00 PM, the system confirms the temperature has remained above 43°C for 2 consecutive hours.
+9. **Event Queueing:** A formal `Disruption Event` is declared and pushed to a lightweight event queue (e.g., Redis Queue) to ensure scalable claim processing.
+10. **Eligibility Check:** The `Parametric Engine` processes the queue, querying the database for all workers assigned to Zone A whose policies are currently "Active".
 
 ### Phase D: Fraud Validation & Payout
-10. **Fraud Guard Assessment:** For each eligible worker, the Engine sends a request to the `AI Fraud Detection` layer.
+11. **Fraud Guard Assessment:** For each eligible worker, the Engine sends a request to the `AI Fraud Detection` layer.
     * It checks the worker's mocked GPS logs (Are they actually in Zone A?).
     * It checks activity logs (Were they online and taking orders before the heatwave, or did they take the day off?).
-11. **Claim Generation:** If the fraud check passes, a `Claim` record is automatically generated with the pre-calculated payout amount (e.g., ₹200).
-12. **Instant Settlement:** The `Payout Simulator` executes the transaction through the payment gateway API.
-13. **Wallet Credit & Notification:** The worker's InsureX wallet is credited, and they receive a push notification: *"Heatwave Disruption Auto-Claim Processed. ₹200 credited to your wallet."*
+12. **Claim Generation:** If the fraud check passes, a `Claim` record is automatically generated with the pre-calculated payout amount (e.g., ₹200).
+13. **Instant Settlement:** The `Payout Simulator` executes the transaction through the payment gateway API.
+14. **Wallet Credit & Notification:** The worker's InsureX wallet is credited, and they receive a push notification: *"Heatwave Disruption Auto-Claim Processed. ₹200 credited to your wallet."*
 
-### Workflow Sequence Diagram
+---
+
+## 🗺️ 12. Workflow Sequence Diagram
 
 ```mermaid
 sequenceDiagram
@@ -183,6 +211,7 @@ sequenceDiagram
     participant DB as System Database
     participant Monitor as Disruption Monitor
     participant Weather as OpenWeather API
+    participant Queue as Redis Event Queue
     participant Fraud as AI Fraud Guard
     participant Payout as Payment Gateway
 
@@ -204,15 +233,17 @@ sequenceDiagram
     loop Every Hour
         Monitor->>Weather: Fetch Current Conditions (Temp, Rain, AQI)
         Weather-->>Monitor: Return Data (e.g., Temp: 44°C)
-        Monitor->>DB: Log Metrics into Events Table (Time/Zone)
+        Monitor->>Monitor: Threshold Check (In-Memory)
     end
     end
 
     %% Disruption Detection
     rect rgb(180, 83, 9)
-    Note over Monitor,DB: Phase C: Parametric Disruption Detected
-    Monitor->>Monitor: Temperature > 43°C for 2 consecutive hours?
-    Monitor->>DB: Declare Disruption Event (Zone A, Extreme Heat)
+    Note over Monitor,Queue: Phase C: Parametric Disruption Detected
+    Monitor->>Monitor: Temperature > 43°C for 2+ hours?
+    Monitor->>DB: Save Event in DB (Zone A, Extreme Heat)
+    Monitor->>Queue: Push Disruption Event to Queue
+    Queue-->>Monitor: Acknowledge
     Monitor->>DB: Query: Find eligible workers in Zone A with Active Policies
     DB-->>Monitor: Return List of Eligible Workers (incl. Worker X)
     end
