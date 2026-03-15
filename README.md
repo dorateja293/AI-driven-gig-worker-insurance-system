@@ -1,13 +1,13 @@
-# 🦄 InsureX: AI-Powered Parametric Insurance for the Gig Economy
+#  InsureX: AI-Powered Parametric Insurance for the Gig Economy
 
 **InsureX is an AI-powered parametric insurance platform that protects gig workers from income loss during extreme weather disruptions through automated real-time payouts.**
 
 **Team Name:** InsureX  
-**Hackathon:** Guidewire DEVTrails 2026   
+**Hackathon:** Guidewire DEVTrails 2026 – University Hackathon (Unicorn Chase)
 
 ---
 
-## 🎯 1. The Problem Space & Persona
+##  1. The Problem Space & Persona
 
 **Chosen Persona:** Food & Q-Commerce Delivery Partners (e.g., Zomato, Swiggy, Zepto).
 
@@ -16,7 +16,7 @@ Delivery partners in India rely on daily wages derived directly from task comple
 
 ---
 
-## 💡 2. Core Solution
+##  2. Core Solution
 
 InsureX is an **AI-Enabled Parametric Insurance Platform** that acts as an income safety net for delivery workers during specified external disruptions. 
 
@@ -24,7 +24,7 @@ Instead of relying on manual claim submissions, slow assessments, and long appro
 
 ---
 
-## 🤔 3. Why Parametric Insurance?
+##  3. Why Parametric Insurance?
 
 Traditional insurance requires manual claim submission and verification, often taking days or weeks to process. Parametric insurance eliminates this friction by using predefined external triggers.
 
@@ -38,7 +38,7 @@ Traditional insurance requires manual claim submission and verification, often t
 
 ---
 
-## 💰 4. The Weekly Premium Model
+##  4. The Weekly Premium Model
 
 Gig workers operate on a weekly earnings cycle. Therefore, our financial model is strictly built on a **Weekly Subscription Plan**.
 
@@ -51,7 +51,7 @@ Gig workers operate on a weekly earnings cycle. Therefore, our financial model i
 
 ---
 
-## 💼 5. Business Sustainability
+##  5. Business Sustainability
 
 **How does this system remain financially sustainable?**
 InsureX operates on a **Risk Pool Model**. The collected premiums from all active workers create a shared fund that finances payouts for those specifically affected by localized disruptions.
@@ -65,7 +65,7 @@ This demonstrates a realistic, mathematically sound insurance model where probab
 
 ---
 
-## ⚡ 6. Parametric Triggers (Automated Claims)
+##  6. Parametric Triggers (Automated Claims)
 
 Claims in InsureX are generated automatically without human intervention. Our Phase-2 MVP focuses on 3 primary disruption triggers, monitored continuously:
 
@@ -82,7 +82,7 @@ Claims in InsureX are generated automatically without human intervention. Our Ph
 
 ---
 
-## 🧠 7. AI / ML Integration Strategy
+##  7. AI / ML Integration Strategy
 
 Artificial Intelligence is woven directly into the core workflow via three core modules:
 
@@ -96,7 +96,7 @@ Artificial Intelligence is woven directly into the core workflow via three core 
 
 ---
 
-## 🔄 8. Platform Workflow (User Journey)
+##  8. Platform Workflow (User Journey)
 
 1. **Onboarding:** Delivery partner registers, providing their city, zone, and primary platform (e.g., Swiggy).
 2. **AI Quote Generation:** The system profiles the risk and offers a tailored Weekly Premium (e.g., ₹35/week).
@@ -108,7 +108,7 @@ Artificial Intelligence is woven directly into the core workflow via three core 
 
 ---
 
-## 🏗️ 9. Technical Architecture & Stack
+##  9. Technical Architecture & Stack
 
 ### Tech Stack
 * **Frontend:** React / Next.js, Tailwind CSS (Worker App + Admin Dashboard)
@@ -140,7 +140,7 @@ System logs disruption detection, claim triggers, and payout transactions for au
 
 ---
 
-## 🗄️ 10. Database Schema Design
+##  10. Database Schema Design
 
 **1. Workers Collection**
 * `worker_id` (PK)
@@ -170,7 +170,7 @@ System logs disruption detection, claim triggers, and payout transactions for au
 
 ---
 
-## 🚀 11. Detailed System Workflow
+##  11. Detailed System Workflow
 
 The following outlines the exact step-by-step sequence of events from a worker joining the platform to receiving an automated payout during a disruption.
 
@@ -200,7 +200,7 @@ The following outlines the exact step-by-step sequence of events from a worker j
 
 ---
 
-## 🗺️ 12. Workflow Sequence Diagram
+##  12. Workflow Sequence Diagram
 
 ```mermaid
 sequenceDiagram
