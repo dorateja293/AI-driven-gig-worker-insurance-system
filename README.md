@@ -284,3 +284,42 @@ sequenceDiagram
     App->>Worker: Push Notification: "₹200 Heatwave Compensation Credited"
     end
 ```
+
+---
+
+## 13. Adversarial Defense & Anti-Spoofing Strategy
+
+### 1. Multi-Layer Fraud Detection
+We do not rely on GPS alone. Our system combines:
+- GPS tracking
+- Movement patterns
+- Delivery activity
+- Weather consistency
+
+### 2. Data Points Used
+- GPS history
+- Movement behavior
+- Delivery activity logs
+- Device signals
+- Weather API validation
+- Claim clustering detection
+
+### 3. Fraud Ring Detection
+We detect coordinated fraud using clustering:
+- Multiple claims from same location
+- Identical behavior patterns
+- Time-based correlation
+
+### 4. AI-Based Anomaly Detection
+We use AI models to:
+- detect abnormal patterns
+- identify spoofing behavior
+- flag suspicious claims
+
+### 5. Fair UX Handling
+We use a 3-level system:
+- Low risk → auto approve
+- Medium risk → delay & verify
+- High risk → flag
+
+This ensures genuine workers are not penalized while fraud is prevented.
