@@ -156,7 +156,7 @@ Using time-series forecasting, we:
 ### Tech Stack
 * **Frontend:** React / Next.js, Tailwind CSS (Worker App + Admin Dashboard)
 * **Backend:** Python (Flask or Django)
-* **Database:** MongoDB (or PostgreSQL / SQLite depending on framework choice)
+* **Database:** PostgreSQL
 * **AI/ML:** Python (Scikit-learn, Pandas) integrated directly within the backend
 * **Message Queue:** Redis / Kafka (for asynchronous claim burst processing)
 * **APIs:** OpenWeather API, Payment Sandbox (UPI simulator/Razorpay test mode)
