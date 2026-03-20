@@ -12,6 +12,21 @@
 
 **Chosen Persona:** Food & Q-Commerce Delivery Partners (e.g., Zomato, Swiggy, Zepto).
 
+### Persona Scenario (Real-World Example)
+Ravi is a Swiggy delivery partner in Hyderabad.
+- Daily earnings: ₹700–₹900
+- Peak hours: 12 PM – 3 PM, 7 PM – 10 PM
+- Works ~8–10 hours daily
+
+On a normal day, Ravi completes 20 deliveries.
+However, during extreme heat (45°C+):
+- Orders drop by 40%
+- He avoids working in afternoon hours
+- Earnings drop to ₹400–₹500
+
+Loss: ₹300–₹400 per day. Ravi has no protection against this income loss.
+InsureX ensures that when such disruptions occur, Ravi receives automatic compensation without needing to manually claim.
+
 **The Problem:**
 Delivery partners in India rely on daily wages derived directly from task completion. When severe external disruptions occur (like extreme heatwaves, heavy monsoons, or sudden pollution spikes), order volumes drop, local delivery zones are closed, or it becomes physiologically dangerous to work. These workers lose 20-30% of their weekly income with zero safety net. Existing micro-insurance policies strictly cover accidental death, vehicle damage, or medical bills—they **do not** cover loss of earnings due to uncontrollable weather or social events.
 
@@ -102,16 +117,25 @@ Claims in InsureX are generated automatically without human intervention. Our Ph
 
 ## 7. AI / ML Integration Strategy
 
-Artificial Intelligence is woven directly into the core workflow via three core modules:
+### AI Implementation (Practical Approach)
 
-1. **Risk Profiling AI (Underwriting & Pricing):** Dynamically generates proactive risk profiles and individual weekly premium quotes. The Risk Profiling AI can use ensemble models such as Random Forest or Gradient Boosting to generate probabilistic disruption risk scores.
-   * **Risk Model Inputs:** Historical rainfall frequency, heatwave frequency, flood risk zones, delivery density, seasonal patterns.
-   * **Model Output:** `RiskScore (0-1)` and `Weekly Premium Recommendation`.
-2. **AI Disruption Prediction:** Instead of only reacting to weather, the AI forecasts upcoming disruptions.
-   * *Example:* An AI Forecast Model predicts tomorrow's heat probability = 82%. The system automatically informs the worker: *"High heat risk tomorrow. Coverage recommended."* This demonstrates proactive, predictive insurance.
-3. **Fraud Guard (Anomaly Detection):** Before any parametric payout is released, the AI evaluates the claim context to prevent system abuse.
-   * *Checks include:* Does the worker's mocked GPS coordinate history match the weather event zone? Is this an impossible duplicate claim? Were they "offline" on the delivery app the entire day prior to the weather event (indicating no original intent to work)?
-   * *Cluster Detection:* The Fraud Guard also detects abnormal claim clusters from identical GPS coordinates that may indicate coordinated fraud attempts.
+1. **Risk Scoring Model**
+We calculate a Risk Score (0–1) using historical weather data, zone risk level (flood/heat zones), and seasonal patterns.
+*Model:* `RiskScore = f(rain_frequency, heat_days, zone_risk)`
+
+2. **Premium Calculation**
+`Premium = BaseRate × RiskScore × SeasonalFactor`
+
+3. **Fraud Detection Model**
+We use anomaly detection to:
+- Detect unusual GPS movement
+- Identify inactive users claiming payouts
+- Cluster similar suspicious claims (fraud rings)
+
+4. **Disruption Prediction**
+Using time-series forecasting, we:
+- Predict probability of extreme weather
+- Notify users before disruption
 
 ---
 
@@ -153,6 +177,23 @@ flowchart TD
     Claim --> Payout[Payout System]
     Payout --> Wallet[Worker Wallet]
 ```
+
+### Development Plan (Phase-wise)
+
+**Week 1–2:**
+- UI design (React)
+- Backend setup (Flask/Django)
+- Database schema
+
+**Week 3–4:**
+- Weather API integration
+- Policy system
+- Claim trigger engine
+
+**Week 5–6:**
+- Fraud detection module
+- Payment simulation
+- Dashboard & analytics
 
 ### Scalability
 The event-driven architecture allows InsureX to process thousands of disruption-triggered claims simultaneously without blocking the system.
@@ -296,6 +337,10 @@ We do not rely on GPS alone. Our system combines:
 - Delivery activity
 - Weather consistency
 
+To test this, we validate:
+- **Movement validation:** Real worker = continuous movement. Fake = static / jumps.
+- **Activity check:** No orders = suspicious behavior.
+
 ### 2. Data Points Used
 - GPS history
 - Movement behavior
@@ -305,10 +350,8 @@ We do not rely on GPS alone. Our system combines:
 - Claim clustering detection
 
 ### 3. Fraud Ring Detection
-We detect coordinated fraud using clustering:
-- Multiple claims from same location
-- Identical behavior patterns
-- Time-based correlation
+We detect coordinated fraud using clustering. 
+**Our system detects coordinated fraud attacks by identifying abnormal clusters of claims originating from identical GPS locations and similar behavioral patterns within short time intervals.** (e.g., 500 users in same location = fraud ring).
 
 ### 4. AI-Based Anomaly Detection
 We use AI models to:
@@ -322,4 +365,4 @@ We use a 3-level system:
 - Medium risk → delay & verify
 - High risk → flag
 
-This ensures genuine workers are not penalized while fraud is prevented.
+This ensures genuine workers are not penalized while fraud is prevented. We do not directly reject claims to avoid penalizing honest gig workers experiencing network drops.
