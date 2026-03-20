@@ -10,7 +10,7 @@
 
 ## 1. The Problem Space & Persona
 
-**Chosen Persona:** Food & Q-Commerce Delivery Partners (e.g., Zomato, Swiggy, Zepto).
+**Chosen Persona:** Food Delivery Partners (e.g., Zomato, Swiggy).
 
 ### Persona Scenario (Real-World Example)
 Ravi is a Swiggy delivery partner in Hyderabad.
