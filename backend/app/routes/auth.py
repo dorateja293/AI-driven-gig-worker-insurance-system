@@ -144,8 +144,8 @@ def register():
 @bp.route('/login', methods=['POST'])
 def login():
     """
-    Login existing worker with Worker ID + Email OTP verification
-    Request: {worker_id, email}
+    Login existing worker with Worker ID + Email + Password
+    Request: {worker_id, email, password}
     Response: {user_id, name, email, worker_id, city, zone, platform, wallet_balance, token, active_policy}
     """
     try:
@@ -156,9 +156,17 @@ def login():
             return jsonify({'error': 'Worker ID is required'}), 400
         if 'email' not in data:
             return jsonify({'error': 'Email is required'}), 400
+        if 'password' not in data:
+            return jsonify({'error': 'Password is required'}), 400
 
         worker_id = data['worker_id'].strip().upper()
         email = data['email'].strip().lower()
+        password = data['password'].strip()
+
+        # Validate password (must be exactly "insurex123")
+        if password != 'insurex123':
+            logger.warning(f"🔴 Login attempt with incorrect password for worker {worker_id}")
+            return jsonify({'error': 'Invalid password'}), 401
 
         # Find worker in VALID_WORKERS list
         worker = next((w for w in VALID_WORKERS if w['workerId'].upper() == worker_id), None)
