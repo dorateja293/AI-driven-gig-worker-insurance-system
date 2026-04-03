@@ -5,6 +5,8 @@ from app.utils import generate_token
 from app.services.otp_service import OTPService
 import logging
 import time
+import requests
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -553,3 +555,126 @@ def resend_otp():
             'message': 'Failed to resend OTP'
         }), 500
 
+
+# ==================== WEATHER ENDPOINT ====================
+
+@bp.route('/weather', methods=['POST'])
+def get_weather():
+    """
+    Get weather data for given latitude and longitude
+    Request: {"lat": -23.1815, "lon": 72.6313}
+    Response: {"city": "Vadodara", "temperature": 32, "condition": "Rain", "wind": 10, "risk_level": "high"}
+    """
+    try:
+        data = request.get_json()
+        
+        if not data or 'lat' not in data or 'lon' not in data:
+            return jsonify({
+                'error': 'Latitude and longitude are required',
+                'city': 'Unknown',
+                'temperature': 0,
+                'condition': 'Unknown',
+                'wind': 0,
+                'risk_level': 'medium'
+            }), 400
+        
+        lat = data['lat']
+        lon = data['lon']
+        
+        # Validate coordinates
+        try:
+            lat = float(lat)
+            lon = float(lon)
+            if not (-90 <= lat <= 90) or not (-180 <= lon <= 180):
+                raise ValueError("Invalid coordinates")
+        except (ValueError, TypeError):
+            return jsonify({
+                'error': 'Invalid latitude or longitude',
+                'city': 'Unknown',
+                'temperature': 0,
+                'condition': 'Unknown',
+                'wind': 0,
+                'risk_level': 'medium'
+            }), 400
+        
+        # Get OpenWeather API key from environment
+        api_key = os.getenv('OPENWEATHER_API_KEY')
+        if not api_key:
+            logger.warning("⚠️ OpenWeather API key not found in environment")
+            return jsonify({
+                'error': 'Weather API not configured',
+                'city': 'Unknown',
+                'temperature': 25,
+                'condition': 'Clear',
+                'wind': 5,
+                'risk_level': 'low'
+            }), 503
+        
+        # Fetch weather data from OpenWeatherMap
+        url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}&units=metric"
+        
+        response = requests.get(url, timeout=5)
+        
+        if response.status_code != 200:
+            logger.warning(f"⚠️ OpenWeather API error: {response.status_code}")
+            return jsonify({
+                'error': 'Weather service unavailable',
+                'city': 'Unknown',
+                'temperature': 25,
+                'condition': 'Clear',
+                'wind': 5,
+                'risk_level': 'medium'
+            }), 503
+        
+        weather_data = response.json()
+        
+        # Extract relevant data
+        city = weather_data.get('name', 'Unknown')
+        temperature = round(weather_data.get('main', {}).get('temp', 0))
+        condition = weather_data.get('weather', [{}])[0].get('main', 'Unknown')
+        wind_speed = round(weather_data.get('wind', {}).get('speed', 0), 1)
+        
+        # Determine risk level based on weather condition and other factors
+        risk_level = 'low'
+        if condition.lower() in ['rain', 'drizzle']:
+            risk_level = 'medium'
+        elif condition.lower() in ['thunderstorm', 'tornado', 'hurricane']:
+            risk_level = 'high'
+        elif temperature > 40:
+            risk_level = 'medium'
+        elif temperature > 45:
+            risk_level = 'high'
+        
+        logger.info(f"✅ Weather fetched for {city}: {temperature}°C, {condition}, Wind: {wind_speed} m/s, Risk: {risk_level}")
+        
+        return jsonify({
+            'city': city,
+            'temperature': temperature,
+            'condition': condition,
+            'wind': wind_speed,
+            'risk_level': risk_level,
+            'lat': lat,
+            'lon': lon
+        }), 200
+        
+    except requests.exceptions.RequestException as e:
+        logger.error(f"❌ Weather API request failed: {str(e)}")
+        return jsonify({
+            'error': 'Weather service unavailable',
+            'city': 'Unknown',
+            'temperature': 25,
+            'condition': 'Clear',
+            'wind': 5,
+            'risk_level': 'medium'
+        }), 503
+    
+    except Exception as e:
+        logger.error(f"❌ Error fetching weather: {str(e)}")
+        return jsonify({
+            'error': 'Failed to get weather data',
+            'city': 'Unknown',
+            'temperature': 25,
+            'condition': 'Clear',
+            'wind': 5,
+            'risk_level': 'medium'
+        }), 500
