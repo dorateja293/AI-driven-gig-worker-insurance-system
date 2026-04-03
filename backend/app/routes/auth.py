@@ -75,6 +75,12 @@ VALID_WORKERS = [
         "platform": "Swiggy",
         "name": "Avishwakanth"
     },
+    {
+        "workerId": "SWG2003",
+        "email": "devendraberre@gmail.com",
+        "platform": "Swiggy",
+        "name": "Devendra Berre"
+    },
 ]
 
 @bp.route('/register', methods=['POST'])
