@@ -31,8 +31,8 @@ const AdminTriggerPanel = ({ onTrigger }) => {
   };
 
   return (
-    <div className="bg-red-50 p-6 rounded-2xl border border-red-200 shadow-sm h-full">
-      <h3 className="text-red-800 font-bold text-lg mb-4">Simulate The 5 Demo Triggers</h3>
+    <div className="bg-orange-50 p-6 rounded-2xl border-2 border-orange-200 shadow-sm h-full">
+      <h3 className="text-orange-800 font-bold text-lg mb-4">Simulate The 5 Demo Triggers</h3>
       <div className="space-y-3">
         <button onClick={() => handleSimulate('Heatwave')} disabled={loading} className="w-full flex items-center justify-center space-x-2 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-bold shadow-sm transition-all focus:ring-4 focus:ring-orange-500/30">
           <Flame className="w-4 h-4" /> <span>Trigger 45°C Heatwave</span>
@@ -50,7 +50,7 @@ const AdminTriggerPanel = ({ onTrigger }) => {
           <WifiOff className="w-4 h-4" /> <span>Trigger Interet Blackout</span>
         </button>
       </div>
-      <p className="mt-4 text-xs text-red-600 font-medium text-center">Zero-Touch Auto-Claims processing</p>
+      <p className="mt-4 text-xs text-orange-600 font-medium text-center">Zero-Touch Auto-Claims processing</p>
     </div>
   );
 };

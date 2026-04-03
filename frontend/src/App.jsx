@@ -12,17 +12,15 @@ import AdminPanel from './pages/AdminPanel';
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-[#f7f9fb] text-gray-900 font-sans selection:bg-indigo-200">
-        <main className="max-w-6xl mx-auto px-6 pt-6">
-          <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/buy-policy" element={<BuyPolicy />} />
-            <Route path="/admin" element={<AdminPanel />} />
-          </Routes>
-        </main>
+      <div className="w-full h-full">
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/buy-policy" element={<BuyPolicy />} />
+          <Route path="/admin" element={<AdminPanel />} />
+        </Routes>
       </div>
     </BrowserRouter>
   );

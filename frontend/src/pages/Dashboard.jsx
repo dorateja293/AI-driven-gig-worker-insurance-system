@@ -9,25 +9,42 @@ import Layout from '../components/Layout';
 const Dashboard = () => {
   const navigate = useNavigate();
   const [data, setData] = useState({ wallet: null, policy: null, claims: [] });
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const user_id = localStorage.getItem('user_id');
-        if (!user_id) return navigate('/register');
+        // Check if user is logged in (from registration)
+        const userStr = sessionStorage.getItem('user');
+        const token = sessionStorage.getItem('token');
+        const isLoggedIn = sessionStorage.getItem('isLoggedIn');
         
-        const [walletRes, policyRes, claimsRes] = await Promise.all([
-          api.get(`/wallet?user_id=${user_id}`),
-          api.get(`/policy/status?user_id=${user_id}`).catch(() => ({ data: null })),
-          api.get(`/claims?user_id=${user_id}`)
-        ]);
+        console.log('🔍 Dashboard Check:', { userStr, token, isLoggedIn });
+        
+        if (!userStr || !token || !isLoggedIn) {
+          console.log('❌ Not logged in, redirecting to register');
+          return navigate('/register');
+        }
 
-        setData({
-          wallet: walletRes.data,
-          policy: policyRes.data,
-          claims: claimsRes.data.claims || []
-        });
+        const user = JSON.parse(userStr);
+        console.log('✅ User logged in:', user);
+        setUserData(user);
+
+        // Fetch dashboard data if user_id exists
+        if (user.user_id) {
+          const [walletRes, policyRes, claimsRes] = await Promise.all([
+            api.get(`/wallet?user_id=${user.user_id}`).catch(e => ({ data: null })),
+            api.get(`/policy/status?user_id=${user.user_id}`).catch(() => ({ data: null })),
+            api.get(`/claims?user_id=${user.user_id}`).catch(e => ({ data: { claims: [] } }))
+          ]);
+
+          setData({
+            wallet: walletRes?.data,
+            policy: policyRes?.data,
+            claims: claimsRes?.data?.claims || []
+          });
+        }
       } catch (err) {
         console.error("Dashboard Sync Error:", err);
       } finally {
@@ -42,7 +59,7 @@ const Dashboard = () => {
 
   if (loading) return (
     <Layout>
-       <div className="flex justify-center items-center h-64 text-indigo-600 font-bold animate-pulse">Syncing Secure Data...</div>
+       <div className="flex justify-center items-center h-64 text-orange-600 font-bold animate-pulse">Syncing Secure Data...</div>
     </Layout>
   );
 
@@ -50,7 +67,7 @@ const Dashboard = () => {
     <Layout>
       <div className="space-y-6">
         <header className="mb-8">
-          <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">Worker Dashboard</h1>
+          <h1 className="text-3xl font-extrabold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent tracking-tight">Worker Dashboard</h1>
           <p className="text-sm text-gray-500 mt-1 font-medium">Auto-synced via Parametric API</p>
         </header>
         
@@ -60,8 +77,8 @@ const Dashboard = () => {
             <WalletSummary wallet={data.wallet} />
             
             {/* Bottom: Claims */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 transition-all duration-200 hover:shadow-md">
-               <h3 className="text-lg font-bold text-gray-900 mb-4 border-b border-gray-50 pb-3">Recent Payouts</h3>
+            <div className="bg-white p-6 rounded-2xl shadow-lg border-2 border-orange-100 transition-all duration-200 hover:shadow-xl hover:border-orange-200">
+               <h3 className="text-lg font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-4 border-b border-orange-50 pb-3">Recent Payouts</h3>
                <ClaimList claims={data.claims} />
             </div>
           </div>

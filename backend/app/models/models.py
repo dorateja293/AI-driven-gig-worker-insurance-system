@@ -7,6 +7,7 @@ class User(db.Model):
 
     id = db.Column(db.String(36), primary_key=True, default=lambda: f"usr_{uuid.uuid4().hex[:10]}")
     name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=True)
     phone = db.Column(db.String(15), unique=True, nullable=False)
     city = db.Column(db.String(50), nullable=False)
     zone = db.Column(db.String(20), nullable=False)
@@ -24,6 +25,7 @@ class User(db.Model):
         return {
             'user_id': self.id,
             'name': self.name,
+            'email': self.email,
             'phone': self.phone,
             'city': self.city,
             'zone': self.zone,
