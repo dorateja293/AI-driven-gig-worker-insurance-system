@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight, Shield, Wallet, Zap, TrendingUp, Activity, AlertCircle, CheckCircle2, MapPin, Cloud, Droplets } from 'lucide-react';
+import { ChevronRight, Shield, Wallet, Zap, TrendingUp, Activity, AlertCircle, CheckCircle2, MapPin, Cloud, Droplets, Zap as Lightning, X } from 'lucide-react';
 import api from '../services/api';
 import Layout from '../components/Layout';
 
@@ -22,6 +22,8 @@ const Dashboard = () => {
     lat: null,
     lon: null
   });
+  const [autoClaimNotification, setAutoClaimNotification] = useState(null);
+  const [lastAutoClaimCheck, setLastAutoClaimCheck] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -68,6 +70,41 @@ const Dashboard = () => {
                 
                 setWeather(weatherRes.data);
                 console.log('✅ Weather fetched:', weatherRes.data);
+
+                // AUTO-CLAIM CHECK: Only check every 5 minutes (300 seconds)
+                const now = new Date().getTime();
+                if (!lastAutoClaimCheck || (now - lastAutoClaimCheck) > 300000) {
+                  try {
+                    const claimCheckRes = await api.post('/claims/check-weather-trigger', {
+                      user_id: user.user_id,
+                      weather_condition: weatherRes.data.condition,
+                      temperature: weatherRes.data.temperature,
+                      city: weatherRes.data.city,
+                      lat: latitude,
+                      lon: longitude
+                    });
+
+                    if (claimCheckRes.data?.claimTriggered) {
+                      console.log('💰 AUTO CLAIM TRIGGERED:', claimCheckRes.data);
+                      setAutoClaimNotification({
+                        triggered: true,
+                        amount: claimCheckRes.data.amount,
+                        condition: claimCheckRes.data.condition,
+                        reason: claimCheckRes.data.reason,
+                        newBalance: claimCheckRes.data.newBalance
+                      });
+
+                      // Refresh dashboard data to show updated wallet and claims
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 3000);
+                    }
+                    
+                    setLastAutoClaimCheck(now);
+                  } catch (claimErr) {
+                    console.log('ℹ️ Auto-claim check:', claimErr.response?.data?.reason || 'Checked');
+                  }
+                }
               } catch (err) {
                 console.error('Weather API error:', err);
                 setWeather(prev => ({
@@ -116,6 +153,33 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-8">
+        
+        {/* AUTO-CLAIM NOTIFICATION POPUP */}
+        {autoClaimNotification?.triggered && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4 animate-pulse">
+            <div className="bg-white rounded-3xl p-10 max-w-md shadow-2xl border-2 border-green-400 animate-bounce">
+              <div className="text-center">
+                <div className="text-6xl mb-4">💰</div>
+                <h2 className="text-3xl font-bold text-green-700 mb-3">CLAIM CREDITED!</h2>
+                <p className="text-lg font-bold text-gray-800 mb-4">₹{autoClaimNotification.amount}</p>
+                
+                <div className="bg-green-50 border border-green-300 rounded-lg p-4 mb-6">
+                  <p className="text-sm text-gray-700 mb-2"><strong>Weather:</strong> {autoClaimNotification.condition}</p>
+                  <p className="text-sm text-gray-600">{autoClaimNotification.reason}</p>
+                </div>
+                
+                <p className="text-green-700 font-bold mb-6">New Wallet Balance: ₹{autoClaimNotification.newBalance}</p>
+                
+                <button
+                  onClick={() => setAutoClaimNotification(null)}
+                  className="bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-3 px-8 rounded-full hover:from-green-600 hover:to-emerald-700 active:scale-95 transition-all w-full"
+                >
+                  ✓ Got it!
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         
         {/* MAIN GRID: 2 Columns */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
@@ -322,6 +386,46 @@ const Dashboard = () => {
                    weather.risk_level === 'medium' ? 'Moderate risk - Stay alert' :
                    'Safe conditions - Regular work'}
                 </p>
+              </div>
+            </div>
+
+            {/* 4C. AUTO CLAIM ENGINE STATUS CARD */}
+            <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-2xl p-7 border-2 border-green-300 shadow-md hover:shadow-lg transition-shadow">
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-3">
+                  <Lightning className="w-6 h-6 text-emerald-600 animate-bounce" />
+                  <h3 className="text-xl font-bold text-gray-900">⚡ Auto Claim Engine</h3>
+                </div>
+                <span className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
+                  <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                  Active
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="bg-white rounded-lg p-4 border border-green-200">
+                  <p className="text-xs text-gray-600 font-medium mb-1">📊 Status</p>
+                  <p className="text-lg font-bold text-emerald-700">🟢 Running</p>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border border-green-200">
+                  <p className="text-xs text-gray-600 font-medium mb-1">⏰ Last Check</p>
+                  <p className="text-lg font-bold text-emerald-700">{lastAutoClaimCheck ? `${Math.round((new Date().getTime() - lastAutoClaimCheck) / 60000)}m ago` : 'Just now'}</p>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border border-green-200">
+                  <p className="text-xs text-gray-600 font-medium mb-1">📈 Total Claims</p>
+                  <p className="text-lg font-bold text-emerald-700">{claimCount}</p>
+                </div>
+
+                <div className="bg-white rounded-lg p-4 border border-green-200">
+                  <p className="text-xs text-gray-600 font-medium mb-1">💰 Earned</p>
+                  <p className="text-lg font-bold text-emerald-700">₹{dashboardData.claims?.reduce((sum, claim) => sum + (claim.payout_amount || 0), 0) || 0}</p>
+                </div>
+              </div>
+
+              <div className="bg-emerald-100 border border-emerald-300 rounded-lg p-4">
+                <p className="text-emerald-800 text-sm font-medium">✅ System monitoring weather 24/7. Claims are auto-triggered during high-risk conditions with no manual action needed!</p>
               </div>
             </div>
 
