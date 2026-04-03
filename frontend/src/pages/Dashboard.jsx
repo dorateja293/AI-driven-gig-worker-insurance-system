@@ -68,8 +68,28 @@ const Dashboard = () => {
                   lon: longitude
                 });
                 
-                setWeather(weatherRes.data);
-                console.log('✅ Weather fetched:', weatherRes.data);
+                // Handle both success and error responses
+                const weatherData = weatherRes.data || {
+                  city: 'Unknown',
+                  temperature: 25,
+                  condition: 'Clear',
+                  wind: 0,
+                  risk_level: 'low',
+                  lat: latitude,
+                  lon: longitude
+                };
+                
+                setWeather({
+                  city: weatherData.city || 'Unknown',
+                  temperature: weatherData.temperature || 25,
+                  condition: weatherData.condition || 'Clear',
+                  wind: weatherData.wind || 0,
+                  risk_level: weatherData.risk_level || 'low',
+                  lat: latitude,
+                  lon: longitude
+                });
+                
+                console.log('✅ Weather fetched:', weatherData);
 
                 // AUTO-CLAIM CHECK: Only check every 5 minutes (300 seconds)
                 const now = new Date().getTime();
@@ -77,9 +97,9 @@ const Dashboard = () => {
                   try {
                     const claimCheckRes = await api.post('/claims/check-weather-trigger', {
                       user_id: user.user_id,
-                      weather_condition: weatherRes.data.condition,
-                      temperature: weatherRes.data.temperature,
-                      city: weatherRes.data.city,
+                      weather_condition: weatherData.condition,
+                      temperature: weatherData.temperature,
+                      city: weatherData.city,
                       lat: latitude,
                       lon: longitude
                     });
@@ -106,13 +126,19 @@ const Dashboard = () => {
                   }
                 }
               } catch (err) {
-                console.error('Weather API error:', err);
+                console.error('❌ Weather API error:', err);
+                // Set fallback weather data on error
                 setWeather(prev => ({
                   ...prev,
-                  city: 'Location found',
+                  city: 'Weather unavailable',
+                  temperature: 28,
+                  condition: 'Unable to fetch',
+                  wind: 0,
+                  risk_level: 'low',
                   lat: latitude,
                   lon: longitude
                 }));
+              }
               }
             },
             (error) => {

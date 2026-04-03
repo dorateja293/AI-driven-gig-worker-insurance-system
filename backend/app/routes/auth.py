@@ -589,13 +589,14 @@ def get_weather():
         data = request.get_json()
         
         if not data or 'lat' not in data or 'lon' not in data:
+            logger.warning("⚠️ Missing lat/lon in weather request")
             return jsonify({
                 'error': 'Latitude and longitude are required',
                 'city': 'Unknown',
-                'temperature': 0,
-                'condition': 'Unknown',
+                'temperature': 28,
+                'condition': 'Clear',
                 'wind': 0,
-                'risk_level': 'medium'
+                'risk_level': 'low'
             }), 400
         
         lat = data['lat']
@@ -608,13 +609,14 @@ def get_weather():
             if not (-90 <= lat <= 90) or not (-180 <= lon <= 180):
                 raise ValueError("Invalid coordinates")
         except (ValueError, TypeError):
+            logger.warning(f"⚠️ Invalid coordinates: lat={lat}, lon={lon}")
             return jsonify({
                 'error': 'Invalid latitude or longitude',
                 'city': 'Unknown',
-                'temperature': 0,
-                'condition': 'Unknown',
+                'temperature': 28,
+                'condition': 'Clear',
                 'wind': 0,
-                'risk_level': 'medium'
+                'risk_level': 'low'
             }), 400
         
         # Get OpenWeather API key from environment
@@ -624,9 +626,9 @@ def get_weather():
             return jsonify({
                 'error': 'Weather API not configured',
                 'city': 'Unknown',
-                'temperature': 25,
+                'temperature': 28,
                 'condition': 'Clear',
-                'wind': 5,
+                'wind': 0,
                 'risk_level': 'low'
             }), 503
         
@@ -636,21 +638,21 @@ def get_weather():
         response = requests.get(url, timeout=5)
         
         if response.status_code != 200:
-            logger.warning(f"⚠️ OpenWeather API error: {response.status_code}")
+            logger.warning(f"⚠️ OpenWeather API error: {response.status_code} - {response.text}")
             return jsonify({
                 'error': 'Weather service unavailable',
-                'city': 'Unknown',
-                'temperature': 25,
+                'city': 'Unable to fetch',
+                'temperature': 28,
                 'condition': 'Clear',
-                'wind': 5,
-                'risk_level': 'medium'
+                'wind': 0,
+                'risk_level': 'low'
             }), 503
         
         weather_data = response.json()
         
         # Extract relevant data
-        city = weather_data.get('name', 'Unknown')
-        temperature = round(weather_data.get('main', {}).get('temp', 0))
+        city = weather_data.get('name', 'Unknown City')
+        temperature = round(weather_data.get('main', {}).get('temp', 28))
         condition = weather_data.get('weather', [{}])[0].get('main', 'Unknown')
         wind_speed = round(weather_data.get('wind', {}).get('speed', 0), 1)
         
@@ -677,24 +679,35 @@ def get_weather():
             'lon': lon
         }), 200
         
+    except requests.exceptions.Timeout:
+        logger.error(f"❌ Weather API timeout")
+        return jsonify({
+            'error': 'Weather service timeout',
+            'city': 'Timeout',
+            'temperature': 28,
+            'condition': 'Clear',
+            'wind': 0,
+            'risk_level': 'low'
+        }), 503
+    
     except requests.exceptions.RequestException as e:
         logger.error(f"❌ Weather API request failed: {str(e)}")
         return jsonify({
             'error': 'Weather service unavailable',
-            'city': 'Unknown',
-            'temperature': 25,
+            'city': 'Unavailable',
+            'temperature': 28,
             'condition': 'Clear',
-            'wind': 5,
-            'risk_level': 'medium'
+            'wind': 0,
+            'risk_level': 'low'
         }), 503
     
     except Exception as e:
         logger.error(f"❌ Error fetching weather: {str(e)}")
         return jsonify({
             'error': 'Failed to get weather data',
-            'city': 'Unknown',
-            'temperature': 25,
+            'city': 'Error',
+            'temperature': 28,
             'condition': 'Clear',
-            'wind': 5,
-            'risk_level': 'medium'
+            'wind': 0,
+            'risk_level': 'low'
         }), 500
